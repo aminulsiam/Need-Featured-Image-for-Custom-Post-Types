@@ -1,6 +1,6 @@
 <?php
 
-class Need_Feature_Image_nfic {
+class Need_Feature_Image_nfic_Admin {
 
 	public function __construct() {
 		add_action( 'admin_menu', [ $this, 'nfic_add_menu' ] );
@@ -25,7 +25,7 @@ class Need_Feature_Image_nfic {
 		?>
         <div class="wrap">
             <h2><?php _e( 'Need Featured Image For Custom Post', 'nfic' ) ?></h2>
-            <form action="options.php" method="post">
+            <form action="" method="post">
 
                 _<p>You can set the post type for Need Featured Image to work on. By default it set to be Posts
                     only.</p>
@@ -33,37 +33,47 @@ class Need_Feature_Image_nfic {
                     for featured images. Only post types that support featured images will appear on this list.</p>
 
 				<?php
-				$post_types = get_post_types();
+				$get_all_post_types      = get_post_types();
+				$get_selected_post_types = get_option( 'nfi_post_types' );
 
-				foreach ( $post_types as $post_type => $type ) {
+				if ( ! is_array( $get_selected_post_types ) ) {
+					$get_selected_post_types = array();
+				}
+
+				foreach ( $get_all_post_types as $post_type => $type ) {
 					if ( post_type_supports( $type, 'thumbnail' ) ) {
 
 						$checked = "";
-						if ( in_array( $post_type, $post_types ) ) {
+						if ( in_array( $post_type, $get_selected_post_types ) ) {
 							$checked = "checked";
 						}
 						?>
                         <tr>
                             <td>
-                                <input type="checkbox" name="nfi_post_types[]" value=""><?php echo $type; ?><br>
+                                <input type="checkbox" name="nfi_post_types[]"
+                                       value="<?php esc_attr_e( $type ); ?>" <?php echo $checked; ?>>
+								<?php echo $type; ?><br>
                             </td>
                         </tr>
 						<?php
-
 					}
 				}
 				?>
 
-
-                <input name="Submit" type="submit"
-                       value="<?php esc_attr_e( 'Save Changes', 'require-featured-image' ); ?>"
+                <input name="submit" type="submit"
+                       value="<?php esc_attr_e( 'Save Changes', 'nfic' ); ?>"
                        class="button button-primary"/>
             </form>
         </div>
 		<?php
+
+		if ( isset( $_REQUEST['submit'] ) ) {
+			$nfi_post_types = isset( $_POST['nfi_post_types'] ) ? $_POST['nfi_post_types'] : "";
+			add_option( 'nfi_post_types', $nfi_post_types );
+		}
 	}
 
 
 } //end main class
 
-new Need_Feature_Image_nfic();
+new Need_Feature_Image_nfic_Admin();

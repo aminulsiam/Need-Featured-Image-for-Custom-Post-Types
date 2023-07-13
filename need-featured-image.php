@@ -14,4 +14,4 @@
  */
 
 require_once 'class-plugin-admin.php';
-?>
+
