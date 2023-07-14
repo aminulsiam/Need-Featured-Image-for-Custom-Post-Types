@@ -4,6 +4,15 @@ class Need_Feature_Image_nfic_Admin {
 
 	public function __construct() {
 		add_action( 'admin_menu', [ $this, 'nfic_add_menu' ] );
+
+		add_action( 'admin_enqueue_scripts', [ $this, 'nfic_enqueue_scripts' ] );
+	}
+
+	/**
+	 * Register all scripts
+	 */
+	public function nfic_enqueue_scripts() {
+		wp_enqueue_script( 'nfic-admin', plugins_url( '/assets/js/nfic-admin.js' , __FILE__ ), 'jquery', time(), true );
 	}
 
 	/**
