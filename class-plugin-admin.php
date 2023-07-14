@@ -7,7 +7,7 @@ class Need_Feature_Image_nfic_Admin {
 	}
 
 	/**
-	 *
+	 * Add Settings Menu
 	 */
 	public function nfic_add_menu() {
 		add_submenu_page(
@@ -20,7 +20,9 @@ class Need_Feature_Image_nfic_Admin {
 		);
 	}
 
-
+	/**
+	 * Add options
+	 */
 	public function nfi_add_options() {
 		?>
         <div class="wrap">
@@ -33,6 +35,13 @@ class Need_Feature_Image_nfic_Admin {
                     for featured images. Only post types that support featured images will appear on this list.</p>
 
 				<?php
+
+				if ( isset( $_REQUEST['submit'] ) ) {
+					$nfi_post_types = isset( $_POST['nfi_post_types'] ) ? $_POST['nfi_post_types'] : "";
+					update_option( 'nfi_post_types', $nfi_post_types );
+					echo '<div class="notice notice-success is-dismissible"><p>Data saved successfully!</p></div>';
+				}
+
 				$get_all_post_types      = get_post_types();
 				$get_selected_post_types = get_option( 'nfi_post_types' );
 
@@ -52,7 +61,7 @@ class Need_Feature_Image_nfic_Admin {
                             <td>
                                 <input type="checkbox" name="nfi_post_types[]"
                                        value="<?php esc_attr_e( $type ); ?>" <?php echo $checked; ?>>
-								<?php echo $type; ?><br>
+								<?php esc_html_e( $type ); ?><br>
                             </td>
                         </tr>
 						<?php
@@ -66,12 +75,7 @@ class Need_Feature_Image_nfic_Admin {
             </form>
         </div>
 		<?php
-
-		if ( isset( $_REQUEST['submit'] ) ) {
-			$nfi_post_types = isset( $_POST['nfi_post_types'] ) ? $_POST['nfi_post_types'] : "";
-			add_option( 'nfi_post_types', $nfi_post_types );
-		}
-	}
+	} //end nfic_add_options
 
 
 } //end main class

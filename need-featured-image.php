@@ -15,3 +15,10 @@
 
 require_once 'class-plugin-admin.php';
 
+register_activation_hook( __FILE__, 'nfic_set_default_on_activation' );
+function nfic_set_default_on_activation() {
+	add_option( 'nfi_post_types', array('post') );
+	// We added the 86400 (one day) below, because without it
+	//      first run behavior was confusing
+	//add_option( 'rfi_enforcement_start', time() - 86400 );
+}
